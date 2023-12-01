@@ -23,11 +23,11 @@
   "Returns a newly generated UUIDv7 (raw bytes)."
   (print "todo"))
 
-(defun to-string (raw)
+(defun to-string (bytes)
   "Returns a formatted string from raw UUIDv7 bytes."
   (print "todo"))
 
-(defun to-raw (string)
+(defun to-bytes (string)
   "Returns raw UUIDv7 bytes from a string."
   (print "todo"))
 
