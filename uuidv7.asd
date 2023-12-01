@@ -7,7 +7,8 @@
   :author "Pseudomata <pseudomata@proton.me>"
   :license  "MPL-2.0"
   :version "0.1.0"
-  :depends-on (:alexandria)
+  :depends-on (:alexandria
+               :local-time)
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")
