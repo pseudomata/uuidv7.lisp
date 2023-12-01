@@ -14,7 +14,9 @@
 ;;; |                            rand_b                             |
 ;;; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-(in-package #:uuidv7)
+(in-package :uuidv7)
+
+(defconstant +version+ 7)
 
 (defun generate ()
   "Returns a newly generated UUIDv7 (raw bytes)."
