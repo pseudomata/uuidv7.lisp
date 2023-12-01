@@ -23,7 +23,7 @@
   (print "todo"))
 
 (defun to-string (raw)
-  "Returns a formatting string from raw UUIDv7 bytes."
+  "Returns a formatted string from raw UUIDv7 bytes."
   (print "todo"))
 
 (defun to-raw (string)
