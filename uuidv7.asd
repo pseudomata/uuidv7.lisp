@@ -13,4 +13,5 @@
                 :serial t
                 :components ((:file "package")
                              (:file "uuidv7"))))
+  :long-description #.(uiop:read-file-string (uiop:subpathname *load-pathname* "README.md"))
   :in-order-to ((test-op (test-op uuidv7-test))))
