@@ -3,7 +3,8 @@
 ;;;;  file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 (defpackage #:uuidv7
-  (:use #:cl)
+  (:use #:cl
+        #:local-time)
   (:export #:generate
-           #:to-string
-           #:to-raw))
+           #:bytes->string
+           #:string->bytes))
