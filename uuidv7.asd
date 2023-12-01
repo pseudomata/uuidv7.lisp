@@ -12,4 +12,5 @@
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")
-                             (:file "uuidv7")))))
+                             (:file "uuidv7"))))
+  :in-order-to ((test-op (test-op uuidv7-test))))
