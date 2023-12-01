@@ -4,4 +4,6 @@
 
 (defpackage #:uuidv7
   (:use #:cl)
-  (:export #:generate))
+  (:export #:generate
+           #:to-string
+           #:to-raw))
