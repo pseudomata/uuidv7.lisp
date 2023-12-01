@@ -29,3 +29,10 @@
 (defun to-raw (string)
   "Returns raw UUIDv7 bytes from a string."
   (print "todo"))
+
+(defun generate-random-bytes (n)
+  "Generates `n` bits worth of random bytes, returned as raw byte array."
+  (let ((bytes (make-array n :element-type 'bit)))
+    (with-open-file (urandom "/dev/urandom" :element-type 'bit)
+      (read-sequence bytes urandom)
+      (bytes))))
