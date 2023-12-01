@@ -20,7 +20,7 @@
 (defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
 
 (defun generate ()
-  "Returns a newly generated UUIDv7 (raw bytes)."
+  "Returns a newly generated UUIDv7 as raw bytes."
   (print "todo"))
 
 (defun to-string (bytes)

@@ -5,7 +5,8 @@
 (asdf:defsystem #:uuidv7-test
   :author "Pseudomata <pseudomata@proton.me>"
   :license  "MPL-2.0"
-  :depends-on (#:uuidv7)
+  :depends-on (#:uuidv7
+               #:fiveam)
   :components ((:module "t"
                 :serial t
                 :components ((:file "uuidv7")))))
