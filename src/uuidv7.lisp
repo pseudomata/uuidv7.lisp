@@ -16,7 +16,8 @@
 
 (in-package #:uuidv7)
 
-(defconstant +version+ 7)
+(defconstant +version+ #*0111)  ; bit vector holding the binary representation for 7 (the UUID version)
+(defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
 
 (defun generate ()
   "Returns a newly generated UUIDv7 (raw bytes)."
