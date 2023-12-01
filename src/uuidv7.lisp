@@ -14,7 +14,7 @@
 ;;; |                            rand_b                             |
 ;;; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-(in-package :uuidv7)
+(in-package #:uuidv7)
 
 (defconstant +version+ 7)
 
