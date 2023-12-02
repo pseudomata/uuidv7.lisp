@@ -54,19 +54,19 @@
 
 (defun generate-random (n)
   "Generates `n` bits worth of random bytes, returned as a bit vector."
-  (let ((bits (make-array n :element-type 'bit)))
+  (let ((bits (make-sequence '(vector bit) n)))
     (with-open-file (urandom "/dev/urandom" :element-type 'bit)
       (read-sequence bits urandom)
       (bits))))
 
 (defun concat-bit-vectors (&rest vectors)
   "Concatenate multiple bit vectors into a single bit vector."
-  ())
+  (apply #'concatenate 'simple-bit-vector vectors))
 
 (defun ts->bit-vector (ts)
   "Returns the epoch timestamp as a bit vector."
   ())
 
-(defun bit-vector->bytes (bit-vector)
+(defun bit-vector->bytes (bits)
   "Converts a bit vector to a byte array."
   ())
