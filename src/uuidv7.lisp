@@ -64,7 +64,7 @@
   (concatenate 'simple-bit-vector vectors))
 
 (defun ts->bit-vector (ts)
-  "Returns the epoch timestamp as a bit vector."
+  "Returns the epoch timestamp as a 48 bit simple-bit-vector."
   ())
 
 (defun bit-vector->bytes (bits)
