@@ -14,6 +14,13 @@
 ;;; |                            rand_b                             |
 ;;; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
+(defpackage #:uuidv7
+  (:use #:cl
+        #:local-time)
+  (:export #:generate
+           #:bytes->string
+           #:string->bytes))
+
 (in-package #:uuidv7)
 
 (defconstant +version+ #*0111)  ; bit vector holding the binary representation for 7 (the UUID version)

@@ -1,6 +1,8 @@
 # `uuidv7.lisp`
 
-This repository contains a **Common Lisp** implementation for **`UUIDv7`**. See the [IETF document](https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-7) for the specification. I'd also encourage reading [Buildkite](https://buildkite.com/)'s blog post ["Goodbye integers. Hello UUIDv7!"](https://buildkite.com/blog/goodbye-integers-hello-uuids).
+This repository contains a **Common Lisp** implementation for **`UUIDv7`**. See the
+[RFC4122 Version 14 Draft](https://datatracker.ietf.org/doc/draft-ietf-uuidrev-rfc4122bis/) for the
+specification or this [IETF document](https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-7). I'd also encourage reading [Buildkite](https://buildkite.com/)'s blog post ["Goodbye integers. Hello UUIDv7!"](https://buildkite.com/blog/goodbye-integers-hello-uuids).
 
 ⬇️ _(Relevant overview reproduced from the IETF document below)_
 
