@@ -61,7 +61,7 @@
 
 (defun concat-bit-vectors (&rest vectors)
   "Concatenate multiple bit vectors into a single bit vector."
-  (apply #'concatenate 'simple-bit-vector vectors))
+  (concatenate 'simple-bit-vector vectors))
 
 (defun ts->bit-vector (ts)
   "Returns the epoch timestamp as a bit vector."
