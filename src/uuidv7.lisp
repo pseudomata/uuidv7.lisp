@@ -49,8 +49,10 @@
 ;; Internal helper functions (not exposed to the user).
 
 (defun unix-epoch-in-ms ()
-  "Get the unix epoch timestamp in miliseconds"
-  (* 1000 (local-time:timestamp-to-unix (local-time:now))))
+  "Get the unix epoch timestamp in milliseconds"
+  (let ((time (local-time:now)))
+    (+ (* 1000 (local-time:timestamp-to-unix time))  ;; Current epoch time is in seconds
+       (local-time:timestamp-milliseconds time))))   ;; This adds millisecond precision
 
 (defun generate-random (n)
   "Generates `n` bits worth of random bytes, returned as a bit vector."
