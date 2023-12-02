@@ -14,7 +14,8 @@
 ;; (test generate "Test the generate function to generate a UUIDv7."
 ;;   (is (generate)))
 
-(test to-bytes-and-to-string "Test the to-bytes and to-string function using example from spec."
+(test string-to-bytes-conversion
+      "Test string->bytes and bytes->string functions using example from spec."
       (let* ((uuidv7-string "017F22E2-79B0-7CC3-98C4-DC0C0C07398F")
-             (uuidv7-bytes (to-bytes uuidv7-string)))
-        (is (= uuidv7-string (to-string uuidv7-bytes)))))
+             (uuidv7-bytes (string->bytes uuidv7-string)))
+        (is (= uuidv7-string (bytes->string uuidv7-bytes)))))
