@@ -35,7 +35,7 @@
   "Generate and return a UUIDv7 as a byte array (16 bytes)."
   (let ((unix-ts-ms (ts->bit-vector (unix-epoch-in-ms)))
         (rand-a (generate-random 12))
-        (rant-b (generate-random 62)))
+        (rand-b (generate-random 62)))
     (bit-vector->bytes (concat-bit-vectors '(unix-ts-ms
                                              +version+
                                              rand-a
@@ -70,7 +70,7 @@
 
 (defun string->bytes (string)
   "Returns raw UUIDv7 bytes from a string."
-  (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings (including hyphens) should be 36 characters"
+  (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings (including hyphens) should be 36 characters")
   (let* ((cleaned-string (remove #\- string :test #'char=))
          (byte-count (/ (length cleaned-string) 2))
          (byte-array (make-array byte-count :element-type '(unsigned-byte 8))))
