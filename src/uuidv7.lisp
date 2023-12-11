@@ -56,10 +56,10 @@
 
 (defun generate-random (n)
   "Generates `n` bits worth of random bytes, returned as a bit vector."
-  (let ((bits (make-sequence '(vector bit) n)))
+  (let ((bit-vector (make-sequence '(vector bit) n)))
     (with-open-file (urandom "/dev/urandom" :element-type 'bit)
-      (read-sequence bits urandom)
-      (bits))))
+      (read-sequence bit-vector urandom)
+      (bit-vector))))
 
 (defun concat-bit-vectors (&rest vectors)
   "Concatenate multiple bit vectors into a single bit vector."
