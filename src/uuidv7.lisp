@@ -67,8 +67,18 @@
 
 (defun ts->bit-vector (ts)
   "Returns the epoch timestamp as a 48 bit simple-bit-vector."
-  ())
+  (let ((bit-vector (make-array 48 :element-type 'bit :initial-element 0)))
+    (dotimes (i 48)
+      (setf (elt bit-vector (- 47 i)) (logbitp i ts)))
+    bit-vector))
 
-(defun bit-vector->bytes (bits)
+(defun bit-vector->bytes (bit-vector)
   "Converts a bit vector to a byte array."
-  ())
+  (let* ((bit-vector-length (length bit-vector))
+         (byte-array-length (ceiling bit-vector-length 8)))
+    (map 'vector
+         (lambda (index)
+           (if (< index bit-vector-length)
+               (aref bit-vector (- bit-vector-length index 1))
+               0))
+         (loop repeat byte-array-length))))
