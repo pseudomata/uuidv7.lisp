@@ -11,9 +11,6 @@
 (def-suite test-uuidv7 :description "Test suite for this UUIDv7 library.")
 (in-suite test-uuidv7)
 
-;; (test generate "Test the generate function to generate a UUIDv7."
-;;   (is (generate)))
-
 (test string-to-bytes-conversion
       "Test string->bytes and bytes->string functions using example from spec."
       (let* ((uuidv7-string "017F22E2-79B0-7CC3-98C4-DC0C0C07398F")
