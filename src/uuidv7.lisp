@@ -65,20 +65,25 @@
   "Concatenate multiple bit vectors into a single bit vector."
   (concatenate 'simple-bit-vector vectors))
 
+(defconstant +timestamp-bit-length+ 48)  ; The timestamp in milliseconds is 48 bits
+
 (defun ts->bit-vector (ts)
   "Returns the epoch timestamp as a 48 bit simple-bit-vector."
-  (let ((bit-vector (make-array 48 :element-type 'bit :initial-element 0)))
-    (dotimes (i 48)
-      (setf (elt bit-vector (- 47 i)) (logbitp i ts)))
+  (let ((bit-vector (make-array +timestamp-bit-length+
+                                :element-type 'bit
+                                :initial-element 0)))
+    (dotimes (index +timestamp-bit-length+)
+      (setf (elt bit-vector (- 47 index)) (logbitp index ts)))
     bit-vector))
+
+(defconstant +bit-vector-length+ 128)  ; UUIDv7 values are 128 bits
+(defconstant +byte-array-length+ 16)   ; and 16 bytes (128/8)
 
 (defun bit-vector->bytes (bit-vector)
   "Converts a bit vector to a byte array."
-  (let* ((bit-vector-length (length bit-vector))
-         (byte-array-length (ceiling bit-vector-length 8)))
-    (map 'vector
-         (lambda (index)
-           (if (< index bit-vector-length)
-               (aref bit-vector (- bit-vector-length index 1))
-               0))
-         (loop repeat byte-array-length))))
+  (map 'vector
+       (lambda (index)
+         (if (< index +bit-vector-length+)
+             (aref bit-vector (- +bit-vector-length+ index 1))
+             0))
+       (loop repeat +byte-array-length+))))
