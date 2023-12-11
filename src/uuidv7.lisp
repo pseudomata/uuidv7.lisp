@@ -27,24 +27,24 @@
 (defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
 
 (defconstant +bit-vector-length+ 128)    ; UUIDv7 values are 128 bits
-(defconstant +byte-array-length+ 16)     ; and 16 bytes (128/8)
+(defconstant +byte-vector-length+ 16)    ; and 16 bytes (128/8)
 (defconstant +timestamp-bit-length+ 48)  ; The timestamp in milliseconds is 48 bits
 (defconstant +uuidv7-string-length+ 36)  ; UUIDv7 strings are 36 characters
 
 (defun generate ()
-  "Generate and return a UUIDv7 as a byte array (16 bytes)."
-  (let ((unix-ts-ms (ts->bit-vector (unix-epoch-in-ms)))
+  "Generate and return a UUIDv7 as a byte vector (16 bytes)."
+  (let ((unix-ts-ms (ts->bits (unix-epoch-in-ms)))
         (rand-a (generate-random 12))
         (rand-b (generate-random 62)))
-    (bit-vector->bytes (concat-bit-vectors '(unix-ts-ms
-                                             +version+
-                                             rand-a
-                                             +variant+
-                                             rand-b)))))
+    (bits->bytes (concat-bits '(unix-ts-ms
+                                +version+
+                                rand-a
+                                +variant+
+                                rand-b)))))
 
 (defun bytes->string (bytes)
   "Returns a formatted string from raw UUIDv7 bytes."
-  (assert (= (length bytes) +byte-array-length+) "UUIDv7 byte array should be 16 bytes")
+  (assert (= (length bytes) +byte-vector-length+) "UUIDv7 byte vector should be 16 bytes")
   (format nil "~8,'0X-~4,'0X-~4,'0X-~4,'0X-~12,'0X"
           (logior (ash (aref bytes 0) 40)
                   (ash (aref bytes 1) 32)
@@ -73,11 +73,11 @@
   (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings should be 36 characters")
   (let* ((cleaned-string (remove #\- string :test #'char=))
          (byte-count (/ (length cleaned-string) 2))
-         (byte-array (make-array byte-count :element-type '(unsigned-byte 8))))
+         (bytes (make-vector byte-count :element-type '(unsigned-byte 8))))
     (dotimes (index byte-count)
-      (setf (aref byte-array index)
+      (setf (aref bytes index)
             (parse-integer (subseq cleaned-string (* 2 index) (* 2 (1+ index))) :radix 16)))
-    byte-array))
+    bytes))
 
 
 ;; Internal helper functions (not exposed to the user).
@@ -90,39 +90,39 @@
 
 (defun generate-random (n)
   "Generates `n` bits worth of random bytes, returned as a bit vector."
-  (let ((bit-vector (make-array n :element-type 'bit)))
+  (let ((bits (make-vector n :element-type 'bit)))
     (with-open-file (urandom "/dev/urandom" :element-type '(unsigned-byte 8))
       (loop for index below n
-            do (setf (elt bit-vector index)
+            do (setf (elt bits index)
                      (logbitp 0 (read-byte urandom)))))
-    (assert (= (length bit-vector) n) "bit-vector should be `n` bits"
-    bit-vector))
+    (assert (= (length bits) n) "bits vector should contain `n` bits"
+    bits))
 
-(defun concat-bit-vectors (&rest vectors)
-  "Concatenate multiple bit vectors into a single bit vector."
+(defun concat-bits (&rest vectors)
+  "Concatenate multiple bit vectors into a unified bit vector."
   (concatenate 'simple-bit-vector vectors))
 
-(defun ts->bit-vector (ts)
-  "Returns the epoch timestamp as a 48 bit simple-bit-vector."
-  (let ((bit-vector (make-array +timestamp-bit-length+
-                                :element-type 'bit
-                                :initial-element 0)))
+(defun ts->bits (ts)
+  "Returns the epoch timestamp as a 48 bit vector."
+  (let ((bits (make-vector +timestamp-bit-length+
+                           :element-type 'bit
+                           :initial-element 0)))
     (dotimes (index +timestamp-bit-length+)
-      (setf (elt bit-vector (- 47 index)) (logbitp index ts)))
-    bit-vector))
+      (setf (elt bits (- 47 index)) (logbitp index ts)))
+    bits))
 
-(defun bit-vector->bytes (bit-vector)
-  "Converts a 128 bit vector to a 16 byte array."
-  (assert (= (length bit-vector) +bit-vector-length+) "bit-vector should be 128 bits")
+(defun bits->bytes (bits)
+  "Converts a 128 bit vector to a 16 byte vector."
+  (assert (= (length bits) +bit-vector-length+) "bits vector should contain 128 bits")
   (map 'vector
        ;; extracts the nth byte for each index
-       (lambda (index) (logior (ash (aref bit-vector (+ index 0)) 7)
-                               (ash (aref bit-vector (+ index 1)) 6)
-                               (ash (aref bit-vector (+ index 2)) 5)
-                               (ash (aref bit-vector (+ index 3)) 4)
-                               (ash (aref bit-vector (+ index 4)) 3)
-                               (ash (aref bit-vector (+ index 5)) 2)
-                               (ash (aref bit-vector (+ index 6)) 1)
-                               (aref bit-vector (+ index 7))))
+       (lambda (index) (logior (ash (aref bits (+ index 0)) 7)
+                               (ash (aref bits (+ index 1)) 6)
+                               (ash (aref bits (+ index 2)) 5)
+                               (ash (aref bits (+ index 3)) 4)
+                               (ash (aref bits (+ index 4)) 3)
+                               (ash (aref bits (+ index 5)) 2)
+                               (ash (aref bits (+ index 6)) 1)
+                               (aref bits (+ index 7))))
        ;; iterate over 8 bits at a time
        (loop for index from 0 below +bit-vector-length+ by 8)))
