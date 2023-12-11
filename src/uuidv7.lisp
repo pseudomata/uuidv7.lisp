@@ -112,10 +112,15 @@
     bit-vector))
 
 (defun bit-vector->bytes (bit-vector)
-  "Converts a bit vector to a byte array."
+  "Converts a 128 bit vector to a 16 byte array."
+  (assert (= (length bit-vector) +bit-vector-length+) "bit-vector should be 128 bits")
   (map 'vector
-       (lambda (index)
-         (if (< index +bit-vector-length+)
-             (aref bit-vector (- +bit-vector-length+ index 1))
-             0))
-       (loop repeat +byte-array-length+))))
+       (lambda (index) (logior (ash (aref bit-vector (+ index 0)) 7)
+                               (ash (aref bit-vector (+ index 1)) 6)
+                               (ash (aref bit-vector (+ index 2)) 5)
+                               (ash (aref bit-vector (+ index 3)) 4)
+                               (ash (aref bit-vector (+ index 4)) 3)
+                               (ash (aref bit-vector (+ index 5)) 2)
+                               (ash (aref bit-vector (+ index 6)) 1)
+                               (aref bit-vector (+ index 7))))
+       (loop for index from 0 below +byte-array-length+)))
