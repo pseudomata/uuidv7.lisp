@@ -70,7 +70,7 @@
 
 (defun string->bytes (string)
   "Returns raw UUIDv7 bytes from a string."
-  (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings (including hyphens) should be 36 characters")
+  (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings should be 36 characters")
   (let* ((cleaned-string (remove #\- string :test #'char=))
          (byte-count (/ (length cleaned-string) 2))
          (byte-array (make-array byte-count :element-type '(unsigned-byte 8))))
@@ -78,6 +78,7 @@
       (setf (aref byte-array index)
             (parse-integer (subseq cleaned-string (* 2 index) (* 2 (1+ index))) :radix 16)))
     byte-array))
+
 
 ;; Internal helper functions (not exposed to the user).
 
@@ -101,7 +102,6 @@
   "Concatenate multiple bit vectors into a single bit vector."
   (concatenate 'simple-bit-vector vectors))
 
-
 (defun ts->bit-vector (ts)
   "Returns the epoch timestamp as a 48 bit simple-bit-vector."
   (let ((bit-vector (make-array +timestamp-bit-length+
@@ -110,7 +110,6 @@
     (dotimes (index +timestamp-bit-length+)
       (setf (elt bit-vector (- 47 index)) (logbitp index ts)))
     bit-vector))
-
 
 (defun bit-vector->bytes (bit-vector)
   "Converts a bit vector to a byte array."
