@@ -9,10 +9,11 @@
   :version "0.1.0"
   :bug-tracker "https://github.com/pseudomata/uuidv7.lisp/issues"
   :source-control (:git "https://github.com/pseudomata/uuidv7.lisp.git")
+  :name "uuidv7"
   :depends-on (#:alexandria
                #:local-time)
   :components ((:module "src"
                 :serial t
                 :components ((:file "uuidv7"))))
-  :long-description #.(uiop:read-file-string (uiop:subpathname *load-pathname* "README.md"))
+  ;; :long-description #.(uiop:read-file-string (uiop:subpathname *load-pathname* "README.md"))
   :in-order-to ((test-op (test-op uuidv7-test))))
