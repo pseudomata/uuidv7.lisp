@@ -44,7 +44,7 @@
 
 (defun bytes->string (bytes)
   "Returns a formatted string from raw UUIDv7 bytes."
-  (assert (= (length bytes) +byte-vector-length+) "UUIDv7 byte vector should be 16 bytes")
+  (assert (= (length bytes) +byte-vector-length+) "bytes vector should contain 16 bytes")
   (format nil "~8,'0X-~4,'0X-~4,'0X-~4,'0X-~12,'0X"
           (logior (ash (aref bytes 0) 40)
                   (ash (aref bytes 1) 32)
@@ -70,7 +70,7 @@
 
 (defun string->bytes (string)
   "Returns raw UUIDv7 bytes from a string."
-  (assert (= (length string) +uuidv7-string-length+) "UUIDv7 strings should be 36 characters")
+  (assert (= (length string) +uuidv7-string-length+) "string should contain 36 characters")
   (let* ((cleaned-string (remove #\- string :test #'char=))
          (byte-count (/ (length cleaned-string) 2))
          (bytes (make-vector byte-count :element-type '(unsigned-byte 8))))
