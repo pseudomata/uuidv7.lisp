@@ -53,9 +53,9 @@ CL-USER> (quicklisp-quickstart:install)
 CL-USER> (asdf:load-system :uuidv7)
 ```
 
-You can run tests by loading `:uuidv7-test`:
-```
-CL-USER> (asdf:load-system :uuidv7-test)
+You can run tests by loading `:uuidv7-test` or by running `test-system`:
+```lisp
+CL-USER> (asdf:load-system :uuidv7-test)  ;; or (asdf:test-system :uuidv7)
 ; compilation finished in 0:00:00.023
 
 Running test suite TEST-UUIDV7
