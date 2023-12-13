@@ -105,6 +105,9 @@
 
 (defun bits->int (bits)
   "Convert a simple-bit-vector into an integer."
-  (parse-integer (concatenate 'string (map 'list #'(lambda (x) (if x #\1 #\0)) bits)) :radix 2))
-
-
+  (parse-integer (concatenate
+                  'string
+                  (map 'list #'
+                       (lambda (x) (if (logbitp 0 x) #\1 #\0))
+                       bits))
+                 :radix 2))
