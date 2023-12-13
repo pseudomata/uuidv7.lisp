@@ -100,7 +100,11 @@
       (setf (elt bytes index)
             (let* ((start (* index 8))
                    (end (+ start 8)))
-              ;; TODO: this needs to be converted to an integer, not sure how to
-              ;;       easily convert the simple-bit-vector to an integer
-              (subseq bits start end))))
+              (bits->int (subseq bits start end)))))
     bytes))
+
+(defun bits->int (bits)
+  "Convert a simple-bit-vector into an integer."
+  (parse-integer (concatenate 'string (map 'list #'(lambda (x) (if x #\1 #\0)) bits)) :radix 2))
+
+
