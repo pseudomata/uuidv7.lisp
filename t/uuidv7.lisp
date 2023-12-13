@@ -5,14 +5,15 @@
 (defpackage #:uuidv7-test
   (:use #:cl
         #:uuidv7
-        #:fiveam))
+        #:fiveam)
+  (:export #:run-tests))
 
 (in-package #:uuidv7-test)
 
-(fiveam:def-suite test-uuidv7 :description "Test suite for this UUIDv7 library.")
-(fiveam:in-suite test-uuidv7)
+(fiveam:def-suite uuidv7-test-suite :description "Test suite for this UUIDv7 library.")
+(fiveam:in-suite uuidv7-test-suite)
 
-(fiveam:test generate-ids
+(fiveam:test generate-ids-and-convert
   "Generate a bunch of UUIDv7 values and verify that they are unique and can be converted into
 strings, and then back into bytes."
   (defvar ids '())
@@ -27,10 +28,11 @@ strings, and then back into bytes."
            number-of-ids-without-duplicates))))
 
 
-(fiveam:test string-to-bytes-conversion
+(fiveam:test string-to-bytes-roundtrip-conversion
   "Test string->bytes and bytes->string functions using example from spec."
   (let* ((uuidv7-string "017F22E2-79B0-7CC3-98C4-DC0C0C07398F")
          (uuidv7-bytes (string->bytes uuidv7-string)))
     (is (string= uuidv7-string (bytes->string uuidv7-bytes)))))
 
-(fiveam:run! 'test-uuidv7)
+(defun run-tests ()
+  (fiveam:run! 'uuidv7-test-suite))

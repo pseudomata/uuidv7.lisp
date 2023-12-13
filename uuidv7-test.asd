@@ -10,4 +10,6 @@
                #:fiveam)
   :components ((:module "t"
                 :serial t
-                :components ((:file "uuidv7")))))
+                :components ((:file "uuidv7"))))
+  :perform (test-op (o s)
+                    (symbol-call :uuidv7-test '#:run-tests)))
