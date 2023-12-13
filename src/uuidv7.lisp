@@ -116,5 +116,9 @@
 
 (defun bits->int (bits)
   "Convert a simple-bit-vector into an integer."
-  (loop for i from 0 to (- (length bits) 1)
-        sum (if (logbitp 0 (aref (reverse bits) i)) (ash 1 i) 0)))
+  (let ((end (- (length bits) 1))
+        (reversed (reverse bits)))
+    (loop for i from 0 to end
+          sum (if (logbitp 0 (aref reversed i))
+                  (ash 1 i)
+                  0))))
