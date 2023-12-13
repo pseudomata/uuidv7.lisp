@@ -26,7 +26,7 @@
 
 (defun generate ()
   "Generate and return a UUIDv7 as a byte vector (16 bytes)."
-  (let ((unix-ts-ms (ts->bits (unix-epoch-in-ms)))
+  (let ((unix-ts-ms (timestamp->bits (unix-epoch-in-ms)))
         (rand-a (generate-random 12))
         (rand-b (generate-random 62)))
     (bits->bytes (concat-bits unix-ts-ms
@@ -95,13 +95,13 @@
          (mapcar (lambda (x) (coerce x 'simple-bit-vector))
                  vectors)))
 
-(defun ts->bits (ts)
+(defun timestamp->bits (timestamp)
   "Returns the epoch timestamp as a 48 bit vector."
   (let ((bits (make-array +timestamp-bit-length+
                            :element-type 'bit
                            :initial-element 0)))
     (dotimes (index +timestamp-bit-length+)
-      (setf (aref bits (- 47 index)) (if (logbitp index ts) 1 0)))
+      (setf (aref bits (- 47 index)) (if (logbitp index timestamp) 1 0)))
     bits))
 
 (defun bits->bytes (bits)
@@ -116,9 +116,5 @@
 
 (defun bits->int (bits)
   "Convert a simple-bit-vector into an integer."
-  (parse-integer (concatenate
-                  'string
-                  (map 'list #'
-                       (lambda (x) (if (logbitp 0 x) #\1 #\0))
-                       bits))
-                 :radix 2))
+  (loop for i from 0 to (- (length bits) 1)
+        sum (if (logbitp 0 (aref (reverse bits) i)) (ash 1 i) 0)))
