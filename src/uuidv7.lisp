@@ -23,13 +23,6 @@
 
 (in-package #:uuidv7)
 
-(defconstant +version+ #*0111)  ; bit vector holding the binary representation for 7 (the UUID version)
-(defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
-
-(defconstant +bit-vector-length+ 128)    ; UUIDv7 values are 128 bits
-(defconstant +byte-vector-length+ 16)    ; and 16 bytes (128/8)
-(defconstant +timestamp-bit-length+ 48)  ; The timestamp in milliseconds is 48 bits
-(defconstant +uuidv7-string-length+ 36)  ; UUIDv7 strings are 36 characters
 
 (defun generate ()
   "Generate and return a UUIDv7 as a byte vector (16 bytes)."
@@ -62,7 +55,15 @@
     bytes))
 
 
-;; Internal helper functions (not exposed to the user).
+;; Internal helper functions and constants (not exposed to the user).
+
+(defconstant +version+ #*0111)  ; bit vector holding the binary representation for 7 (the UUID version)
+(defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
+
+(defconstant +bit-vector-length+ 128)    ; UUIDv7 values are 128 bits
+(defconstant +byte-vector-length+ 16)    ; and 16 bytes (128/8)
+(defconstant +timestamp-bit-length+ 48)  ; The timestamp in milliseconds is 48 bits
+(defconstant +uuidv7-string-length+ 36)  ; UUIDv7 strings are 36 characters
 
 (defun unix-epoch-in-ms ()
   "Get the unix epoch timestamp in milliseconds"
