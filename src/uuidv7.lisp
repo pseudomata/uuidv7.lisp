@@ -44,10 +44,12 @@
 
 (defun bytes->string (bytes)
   "Returns a formatted string from raw UUIDv7 bytes."
-  ;; TODO: previous version was messy and broken, figure out a better
-  ;;       way to read chunks from the bytes and format them into a
-  ;;       properly formatted string with hyphen characters.
-  ())
+  (let ((first (subseq-to-string bytes 0 4))
+        (second (subseq-to-string bytes 4 6))
+        (third (subseq-to-string bytes 6 8))
+        (fourth (subseq-to-string bytes 8 10))
+        (fifth (subseq-to-string bytes 10 16)))
+    (format nil "~a-~a-~a-~a-~a" first second third fourth fifth)))
 
 (defun string->bytes (string)
   "Returns raw UUIDv7 bytes from a string."
@@ -73,15 +75,23 @@
   (let ((bits (make-array n :element-type 'bit)))
     (with-open-file (urandom "/dev/urandom" :element-type '(unsigned-byte 8))
       (loop for index below n
-            do (setf (elt bits index)
+            do (setf (aref bits index)
                      (if (logbitp 0 (read-byte urandom)) 1 0))))
     bits))
+
+(defun subseq-to-string (array start end)
+  "Given an array of bytes, a start, and an end, returns a string containing those bytes."
+  (apply #'concatenate
+         'string
+         (map 'list
+              (lambda (x) (format nil "~2,'0X" x))
+              (subseq array start end))))
 
 (defun concat-bits (&rest vectors)
   "Concatenate multiple bit vectors into a unified bit vector."
   (apply #'concatenate
          'simple-bit-vector
-         (mapcar (lambda (vector) (coerce vector 'simple-bit-vector))
+         (mapcar (lambda (x) (coerce x 'simple-bit-vector))
                  vectors)))
 
 (defun ts->bits (ts)
@@ -90,14 +100,14 @@
                            :element-type 'bit
                            :initial-element 0)))
     (dotimes (index +timestamp-bit-length+)
-      (setf (elt bits (- 47 index)) (if (logbitp index ts) 1 0)))
+      (setf (aref bits (- 47 index)) (if (logbitp index ts) 1 0)))
     bits))
 
 (defun bits->bytes (bits)
   "Converts a 128 bit vector to a 16 byte vector."
   (let ((bytes (make-array +byte-vector-length+ :element-type '(unsigned-byte 8))))
     (dotimes (index +byte-vector-length+)
-      (setf (elt bytes index)
+      (setf (aref bytes index)
             (let* ((start (* index 8))
                    (end (+ start 8)))
               (bits->int (subseq bits start end)))))
