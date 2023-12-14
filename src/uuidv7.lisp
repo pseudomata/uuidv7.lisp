@@ -73,12 +73,23 @@
 
 (defun generate-random (n)
   "Generates `n` bits worth of random bytes, returned as a bit vector."
-  (let ((bits (make-array n :element-type 'bit)))
-    (with-open-file (urandom "/dev/urandom" :element-type '(unsigned-byte 8))
-      (loop for index below n
-            do (setf (aref bits index)
-                     (if (logbitp 0 (read-byte urandom)) 1 0))))
+  (let ((bits (make-array n :element-type 'bit))
+        (bytes (generate-random-bytes (round-up-to-closest-bytes n))))
+    (loop for index below n
+          do (setf (aref bits index)
+                   (if (logbitp (mod index 8)
+                                (aref bytes (floor index 8)))
+                       1 0)))
     bits))
+
+(defun round-up-to-closest-bytes (n)
+  (ceiling n 8))
+
+(defun generate-random-bytes (n)
+  (let ((bytes (make-array n :element-type '(unsigned-byte 8))))
+    (loop for index below n
+          do (setf (aref bytes index) (random 256)))
+    bytes))
 
 (defun subseq-to-string (array start end)
   "Given an array of bytes, a start, and an end, returns a string containing those bytes."
