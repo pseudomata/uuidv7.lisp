@@ -49,9 +49,9 @@
   (let* ((cleaned-string (remove #\- string :test #'char=))
          (byte-count (/ (length cleaned-string) 2))
          (bytes (make-array byte-count :element-type '(unsigned-byte 8))))
-    (dotimes (index byte-count)
-      (setf (aref bytes index)
-            (parse-integer (subseq cleaned-string (* 2 index) (* 2 (1+ index))) :radix 16)))
+    (dotimes (i byte-count)
+      (setf (aref bytes i)
+            (parse-integer (subseq cleaned-string (* 2 i) (* 2 (1+ i))) :radix 16)))
     bytes))
 
 
@@ -75,10 +75,10 @@
   "Generates `n` bits worth of random bytes, returned as a bit vector."
   (let ((bits (make-array n :element-type 'bit))
         (bytes (generate-random-bytes (round-up-to-closest-bytes n))))
-    (loop for index below n
-          do (setf (aref bits index)
-                   (if (logbitp (mod index 8)
-                                (aref bytes (floor index 8)))
+    (loop for i below n
+          do (setf (aref bits i)
+                   (if (logbitp (mod i 8)
+                                (aref bytes (floor i 8)))
                        1 0)))
     bits))
 
@@ -87,8 +87,8 @@
 
 (defun generate-random-bytes (n)
   (let ((bytes (make-array n :element-type '(unsigned-byte 8))))
-    (loop for index below n
-          do (setf (aref bytes index) (random 256)))
+    (loop for i below n
+          do (setf (aref bytes i) (random 256)))
     bytes))
 
 (defun subseq-to-string (array start end)
@@ -111,16 +111,16 @@
   (let ((bits (make-array +timestamp-bit-length+
                            :element-type 'bit
                            :initial-element 0)))
-    (dotimes (index +timestamp-bit-length+)
-      (setf (aref bits (- 47 index)) (if (logbitp index timestamp) 1 0)))
+    (dotimes (i +timestamp-bit-length+)
+      (setf (aref bits (- 47 i)) (if (logbitp i timestamp) 1 0)))
     bits))
 
 (defun bits->bytes (bits)
   "Converts a 128 bit vector to a 16 byte vector."
   (let ((bytes (make-array +byte-vector-length+ :element-type '(unsigned-byte 8))))
-    (dotimes (index +byte-vector-length+)
-      (setf (aref bytes index)
-            (let* ((start (* index 8))
+    (dotimes (i +byte-vector-length+)
+      (setf (aref bytes i)
+            (let* ((start (* i 8))
                    (end (+ start 8)))
               (bits->int (subseq bits start end)))))
     bytes))
@@ -129,7 +129,7 @@
   "Convert a simple-bit-vector into an integer."
   (let ((end (- (length bits) 1))
         (reversed (reverse bits)))
-    (loop for i from 0 to end
+    (loop for i below end
           sum (if (logbitp 0 (aref reversed i))
                   (ash 1 i)
                   0))))
