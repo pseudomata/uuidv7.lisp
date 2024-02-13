@@ -10,7 +10,8 @@
   :bug-tracker "https://github.com/pseudomata/uuidv7.lisp/issues"
   :source-control (:git "https://github.com/pseudomata/uuidv7.lisp.git")
   :name "uuidv7"
-  :depends-on (#:local-time)
+  :depends-on (#:alexandria
+               #:local-time)
   :components ((:module "src"
                 :serial t
                 :components ((:file "uuidv7"))))

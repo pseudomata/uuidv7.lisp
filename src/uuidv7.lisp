@@ -15,7 +15,8 @@
 ;;; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 (defpackage #:uuidv7
-  (:use #:cl
+  (:use #:alexandria
+        #:cl
         #:local-time)
   (:export #:generate
            #:bytes->string
@@ -56,9 +57,10 @@
 
 
 ;; Internal helper functions and constants (not exposed to the user).
-
-(defconstant +version+ #*0111)  ; bit vector holding the binary representation for 7 (the UUID version)
-(defconstant +variant+ #*10)    ; bit vector for the RFC4122 variant field
+(alexandria:define-constant +version+ #*0111  ; bit vector holding the binary representation for 7 (the UUID version)
+                            :test #'equal)
+(alexandria:define-constant +variant+ #*10    ; bit vector for the RFC4122 variant field
+                            :test #'equal)
 
 (defconstant +bit-vector-length+ 128)    ; UUIDv7 values are 128 bits
 (defconstant +byte-vector-length+ 16)    ; and 16 bytes (128/8)
